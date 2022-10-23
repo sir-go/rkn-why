@@ -1,6 +1,6 @@
 ## Check if the internet resource is blocked by RKN
 
-Single-file executable binary with embedded web-interface hosted on 9696 tcp port.
+Single-file executable binary with embedded web-interface
 
 - check by IP (resolve by hostname via external DNS)
 - check by hostname (domains in the database)
