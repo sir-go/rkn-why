@@ -3,11 +3,6 @@ package main
 import (
 	"errors"
 	"fmt"
-	"github.com/bogdanovich/dns_resolver"
-	"github.com/flosch/pongo2"
-	_ "github.com/go-sql-driver/mysql"
-	"github.com/op/go-logging"
-	"golang.org/x/net/idna"
 	"net"
 	"net/http"
 	"net/url"
@@ -15,6 +10,12 @@ import (
 	"os/signal"
 	"regexp"
 	"strings"
+
+	"github.com/bogdanovich/dns_resolver"
+	"github.com/flosch/pongo2"
+	_ "github.com/go-sql-driver/mysql"
+	"github.com/op/go-logging"
+	"golang.org/x/net/idna"
 )
 
 const (
@@ -124,15 +125,6 @@ func sureResolve(cname string, triesLimit int, dnsAnswerLimit int) (
 	return blocked, checked, err
 }
 
-// type TemplateParams struct {
-// 	Query          string
-// 	QueryIsIp      bool
-// 	CheckedIPs     []net.IP
-// 	BlockedSubnet  *DbIPrecord
-// 	BlockedDomains []string
-// 	Error          string
-// }
-
 func handleRequest(w http.ResponseWriter, r *http.Request) {
 	var (
 		parsed *url.URL
@@ -197,10 +189,6 @@ func handleRequest(w http.ResponseWriter, r *http.Request) {
 				answer["error"] = err.Error()
 				return
 			}
-			// log.Debug(answer["blockedSubnet"])
-			// if answer["blockedSubnet"] != nil {
-			// 	return
-			// }
 
 			answer["blockedDomains"], err = findHostInHTTPSDomains(parsed.Host)
 			if err != nil {
@@ -208,9 +196,6 @@ func handleRequest(w http.ResponseWriter, r *http.Request) {
 				answer["error"] = err.Error()
 				return
 			}
-			// if answer["blockedDomains"] != nil {
-			// 	return
-			// }
 
 			answer["blockedUrls"], err = findUrlsOfHost(parsed.Host)
 			if err != nil {
@@ -233,8 +218,12 @@ func main() {
 
 	http.HandleFunc("/", handleRequest)
 	http.HandleFunc("/favicon.ico", favicon)
-	log.Info("serve on http://localhost:9696")
-	err := http.ListenAndServe("127.0.0.1:9696", nil)
+	port := os.Getenv("RKNW_PORT")
+	if port == "" {
+		port = "9696"
+	}
+	log.Infof("serve on http://localhost:%s", port)
+	err := http.ListenAndServe(fmt.Sprintf("127.0.0.1:%s", port), nil)
 	if err != nil {
 		log.Fatal("ListenAndServe: ", err)
 	}

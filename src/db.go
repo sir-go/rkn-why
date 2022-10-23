@@ -67,10 +67,10 @@ func formatDsn(conf *DBConf) (string, string) {
 
 func ConnectDb() (*sql.DB, error) {
 	conn, err := sql.Open(formatDsn(&DBConf{
-		DbName:   os.Getenv("RKNW_DB"),
-		Host:     os.Getenv("RKNW_HOST"),
-		User:     os.Getenv("RKNW_USER"),
-		Password: os.Getenv("RKNW_PASSWD"),
+		DbName:   os.Getenv("RKNW_DB_NAME"),
+		Host:     os.Getenv("RKNW_DB_HOST"),
+		User:     os.Getenv("RKNW_DB_USER"),
+		Password: os.Getenv("RKNW_DB_PASSWD"),
 	}))
 	if err != nil {
 		return nil, err
