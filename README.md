@@ -1,4 +1,4 @@
-## Check if the internet resource is blocked by RKN
+# Check if the internet resource is blocked by RKN
 
 Single-file executable binary with embedded web-interface
 
@@ -7,7 +7,6 @@ Single-file executable binary with embedded web-interface
 - check by url (http urls in the database)
 
 ## Config - ENV variables
-
 |                |                |
 |----------------|----------------|
 | RKNW_PORT      | service port   |
@@ -28,5 +27,4 @@ CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags '-w -s -extldflags "-sta
 ```
 
 ## Screecast
-
 ![](rknw.gif)
